@@ -1,9 +1,7 @@
 import { NextImage } from '@/components/NextImage';
-import { Reviews } from '@/components/Reviews';
 import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
-import {Suspense} from 'react';
-import {DefList} from "@/components/DefList";
+import {MovieForm} from "@/components/MovieForm";
 
 export default async function MoviePage({
   params: { id },
@@ -31,18 +29,9 @@ export default async function MoviePage({
             />
           </div>
           <div className='col-span-3'>
-            <DefList movie={movie} />
+            <MovieForm movie={movie} />
           </div>
         </div>
-        <section>
-          <VerticalContainer className='gap-4'>
-            <h2>Reviews</h2>
-            <Suspense fallback={<p>Loading...</p>}>
-              {/* @ts-expect-error Async Server Component */}
-              <Reviews movieId={movie.id} />
-            </Suspense>
-          </VerticalContainer>
-        </section>
       </VerticalContainer>
     );
   }
