@@ -20,7 +20,7 @@ const Field: FC<FieldProps> = ({ label, field, multiline, type = "text" }) => {
       {multiline ?
         <textarea rows={4} {...field} className="textarea textarea-bordered" />
         :
-        <input type={type} {...field} className="input input-bordered" />
+        <input type={type} {...field} className="input input-bordered"  />
       }
     </div>
   )

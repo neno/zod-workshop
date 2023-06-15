@@ -48,7 +48,7 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
         <legend>Movie Details</legend>
         <ol className="grid grid-cols-6 gap-8">
           <li className="col-span-6">
-            <TextField label="Title" control={control} name="title" require />
+            <TextField label="Title" control={control} name="title" required />
           </li>
           <li className="col-span-6">
             <TextField label="Tagline" control={control} name="tagline" />
