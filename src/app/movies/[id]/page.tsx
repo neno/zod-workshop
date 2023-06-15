@@ -4,6 +4,7 @@ import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
 import {Suspense} from 'react';
 import {DefList} from "@/components/DefList";
+import Link from "next/link";
 
 export default async function MoviePage({
   params: { id },
@@ -32,6 +33,9 @@ export default async function MoviePage({
           </div>
           <div className='col-span-3'>
             <DefList movie={movie} />
+            <Link className="btn btn-primary mt-8" href={`/movies/${movie.id}/edit`}>
+              Edit
+            </Link>
           </div>
         </div>
         <section>

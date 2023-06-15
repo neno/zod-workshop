@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {IMovie} from "@/models/movie";
@@ -31,63 +31,56 @@ interface MovieFormProps {
 }
 
 export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormInput>({
+  const methods = useForm<FormInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       ...movie,
     },
   });
+  const { handleSubmit } = methods;
 
   return (
-    <form className="w-full max-w-xl" onSubmit={handleSubmit((d) => console.log(d))}>
-      <fieldset>
-        <legend>Movie Details</legend>
-        <ol className="grid grid-cols-6 gap-8">
-          <li className="col-span-6">
-            <TextField label="Title" control={control} name="title" required />
-          </li>
-          <li className="col-span-6">
-            <TextField label="Tagline" control={control} name="tagline" />
-          </li>
-          <li className="col-span-3">
-            <TextField label="Release Date" type="date" control={control} name="release_date" />
-          </li>
-          <li className="col-span-3">
-            <TextField label="Runtime" type="number" name="runtime" control={control} />
-          </li>
-          <li className="col-span-6">
-            <TextField multiline label="Overview" control={control} name="overview" />
-          </li>
-          <li className="col-span-3">
-            <TextField label="Budget" type="number" name="budget" control={control} />
-          </li>
-          <li className="col-span-3">
-            <TextField label="Revenue" type="number" name="revenue" control={control} />
-          </li>
-          <li className="col-span-6">
-            <TextField label="Homepage" control={control} name="homepage" />
-          </li>
-          <li className="col-span-2">
-            <TextField label="IMDB ID" control={control} name="imdb_id" />
-          </li>
-          <li className="col-span-2">
-            <TextField label="Vote Average" type="number" control={control} name="vote_average" />
-          </li>
-          <li className="col-span-2">
-            <TextField label="Votes Count" type="number" control={control} name="vote_count" />
-          </li>
-        </ol>
-        <div className="flex justify-between mt-12">
-          <button className="btn btn-primary" type="submit">Submit</button>
-          <Link className="btn btn-error" href={`/movies/${movie.id}`}>
-            Cancel
-          </Link>
-        </div>
-      </fieldset>
-    </form>
+    <FormProvider {...methods} >
+      <form className="w-full max-w-xl" onSubmit={handleSubmit((data) => console.log(data))}>
+        <fieldset>
+          <legend className="text-3xl font-bold">Movie Details</legend>
+          <ol className="grid grid-cols-6 gap-8 mt-8">
+            <li className="col-span-6">
+              <TextField label="Title" name="title" />
+            </li>
+            <li className="col-span-6">
+              <TextField label="Tagline" name="tagline" />
+            </li>
+            <li className="col-span-3">
+              <TextField label="Release Date" type="date" name="release_date" />
+            </li>
+            <li className="col-span-3">
+              <TextField label="Runtime" type="number" name="runtime" />
+            </li>
+            <li className="col-span-6">
+              <TextField label="Genre" name="genres" />
+            </li>
+            <li className="col-span-6">
+              <TextField multiline label="Overview" name="overview" />
+            </li>
+            <li className="col-span-3">
+              <TextField label="Budget" type="number" name="budget" />
+            </li>
+            <li className="col-span-3">
+              <TextField label="Revenue" type="number" name="revenue" />
+            </li>
+            <li className="col-span-6">
+              <TextField label="Homepage" name="homepage" />
+            </li>
+          </ol>
+          <div className="flex justify-between mt-12">
+            <button className="btn btn-primary" type="submit">Submit</button>
+            <Link className="btn btn-error" href={`/movies/${movie.id}`}>
+              Cancel
+            </Link>
+          </div>
+        </fieldset>
+      </form>
+    </FormProvider>
   )
 };

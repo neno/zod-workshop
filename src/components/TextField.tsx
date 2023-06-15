@@ -1,35 +1,32 @@
 import {FC} from "react";
-import {Controller, ControllerProps, ControllerRenderProps} from "react-hook-form";
+import {FieldError, useFormContext} from "react-hook-form";
 
 interface FieldProps {
   label: string;
   multiline?: boolean;
-  field: ControllerRenderProps;
+  name: string;
   type?: "text" | "email" | "number" | "date";
 }
 
-interface TextFieldProps extends FieldProps, Omit<ControllerProps, "render"> {
-}
+export const TextField: FC<FieldProps> = ({ label, name, multiline, type = "text" }) => {
+  const {
+    register,
+    formState: { errors}
+  } = useFormContext();
 
-const Field: FC<FieldProps> = ({ label, field, multiline, type = "text" }) => {
+  const error = errors[name] as FieldError;
+
   return (
-    <div className="form-control w-fulls">
-      <label className="label">
+    <div className="form-control w-full">
+      <label htmlFor={name} className="label">
         <span className="label-text">{label}</span>
       </label>
       {multiline ?
-        <textarea rows={4} {...field} className="textarea textarea-bordered" />
+        <textarea id={name} rows={4} className="textarea textarea-bordered" {...register(name)} />
         :
-        <input type={type} {...field} className="input input-bordered"  />
+        <input id={name} type={type} className="input input-bordered" {...register(name)}  />
       }
+      {error && <p className="text-xs text-error">{error.message}</p>}
     </div>
   )
-}
-
-export const TextField: FC<TextFieldProps> = ({ label, name, control, multiline, type}) => {
-  return (<Controller
-    name={name}
-    control={control}
-    render={({ field }) => <Field type={type} label={label} multiline={multiline} field={field} />}
-  />)
 }

@@ -17,7 +17,7 @@ export default async function MoviePage({
   if (movie) {
     return (
       <VerticalContainer>
-        <div className='grid grid-cols-4 gap-8'>
+        <div className='grid grid-cols-2 gap-8'>
           <div>
             <NextImage
               src={movie.poster_path}
@@ -28,7 +28,7 @@ export default async function MoviePage({
               height={960}
             />
           </div>
-          <div className='col-span-3'>
+          <div>
             <MovieForm movie={movie} />
           </div>
         </div>
