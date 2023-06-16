@@ -12,7 +12,7 @@ export default async function HomePage() {
       <Gallery>
         {movies.map((movie: IMovieItem) => (
           <Link key={movie.id} href={`/movies/${movie.id}`}>
-            <Movie {...movie} isSelected={true} />
+            <Movie {...movie} isSelected={true} data-superjson />
           </Link>
         ))}
       </Gallery>
