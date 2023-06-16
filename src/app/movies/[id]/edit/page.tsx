@@ -18,14 +18,13 @@ export default async function MoviePage({
     return (
       <VerticalContainer>
         <div className='grid grid-cols-2 gap-8'>
-          <div>
+          <div className='relative'>
             <NextImage
               src={movie.poster_path}
               alt={movie.title}
-              className='w-full h-full object-cover object-center'
+              className='object-cover object-center'
+              fill
               sizes='(min-width: 1280px) 640px, (min-width: 768px) 50vw, 100vw'
-              width={640}
-              height={960}
             />
           </div>
           <div>
