@@ -12,16 +12,12 @@ const FormSchema = z.object({
   title: z.string().nonempty(),
   tagline: z.string(),
   release_date: z.string(),
-  runtime: z.number().positive(),
+  runtime: z.coerce.number().nonnegative().optional(),
   genres: z.string(),
   overview: z.string(),
-  budget: z.number().positive(),
-  revenue: z.number().positive(),
+  budget: z.coerce.number().nonnegative().optional(),
+  revenue: z.coerce.number().nonnegative().optional(),
   homepage: z.string().url(),
-  imdb_id: z.string(),
-  popularity: z.number().positive(),
-  vote_average: z.number().positive(),
-  vote_count: z.number().positive()
 });
 
 type FormInput = z.infer<typeof FormSchema>;
@@ -41,7 +37,7 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
 
   return (
     <FormProvider {...methods} >
-      <form className="w-full max-w-xl" onSubmit={handleSubmit((data) => console.log(data))}>
+      <form className="w-full max-w-xl" noValidate onSubmit={handleSubmit((data) => console.log(data))}>
         <fieldset>
           <legend className="text-3xl font-bold">Movie Details</legend>
           <ol className="grid grid-cols-6 gap-8 mt-8">
