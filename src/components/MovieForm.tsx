@@ -7,6 +7,7 @@ import {IMovie} from "@/models/movie";
 import {FC} from "react";
 import Link from "next/link";
 import {TextField} from "@/components/TextField";
+import {useRouter} from "next/navigation";
 
 const FormSchema = z.object({
   title: z.string().nonempty(),
@@ -27,6 +28,7 @@ interface MovieFormProps {
 }
 
 export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
+  const router = useRouter();
   const methods = useForm<FormInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,9 +37,22 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
   });
   const { handleSubmit } = methods;
 
+  const submit = async (data: FormInput) => {
+    try {
+      await fetch(`/api/movies`, {
+        method: 'PATCH',
+        body: JSON.stringify({...data, id: movie.id}),
+      })
+
+      router.push(`/movies/${movie.id}`);
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <FormProvider {...methods} >
-      <form className="w-full max-w-xl" noValidate onSubmit={handleSubmit((data) => console.log(data))}>
+      <form className="w-full max-w-xl" noValidate onSubmit={handleSubmit((data) => submit(data))}>
         <fieldset>
           <legend className="text-3xl font-bold">Movie Details</legend>
           <ol className="grid grid-cols-6 gap-8 mt-8">

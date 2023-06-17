@@ -15,14 +15,14 @@ export function Movie({
   id,
   title,
   poster_path,
-  isSelected: isSlected,
+  isSelected: isSelected,
 }: MovieProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
-  const Icon = isSlected ? IconTrash : IconPlus;
+  const Icon = isSelected ? IconTrash : IconPlus;
   const isMutating = isPending || isFetching;
-  const method = isSlected ? 'DELETE' : 'POST';
+  const method = isSelected ? 'DELETE' : 'POST';
 
   async function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();

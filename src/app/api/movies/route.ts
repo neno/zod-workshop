@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getMovieById } from '@/lib/api';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const movie = await prisma.movie.findMany();
 
   return new Response(JSON.stringify(movie), {
@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const { id } = await request.json();
+  console.log(request.json());
 
   const fullMovieData = await getMovieById(id);
   console.log('genres', JSON.stringify(fullMovieData?.genres));
@@ -44,6 +45,19 @@ export async function POST(request: NextRequest) {
     });
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  const { id, ...data } = await request.json();
+  const updateMovie = await prisma.movie.update({
+    where: { id },
+    data,
+  });
+
+  return new Response(JSON.stringify(updateMovie), {
+    headers: { 'content-type': 'application/json' },
+  });
+}
+
 export async function DELETE(request: NextRequest) {
   const { id } = await request.json();
   const deleteMovie = await prisma.movie.delete({
