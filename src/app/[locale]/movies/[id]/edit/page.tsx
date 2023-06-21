@@ -25,6 +25,16 @@ const MovieFormTemplate = ({ movie }) => {
     string: {
       required_error: t('errors.required'),
       invalid_type_error: t('errors.string'),
+    },
+    number: {
+      required_error: t('errors.required'),
+      invalid_type_error: t('errors.number'),
+    },
+    nonnegative: {
+      message: t('errors.nonnegative'),
+    },
+    url: {
+      message: t('errors.url'),
     }
   };
 

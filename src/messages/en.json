@@ -22,6 +22,8 @@
   "errors": {
     "required": "This field is required",
     "string": "This field must be a string",
-    "number": "This field must be a number"
+    "number": "This field must be a number",
+    "nonnegative": "This field must be a non-negative number",
+    "url": "This field must be a valid URL"
   }
 }

@@ -22,6 +22,8 @@
   "errors": {
     "required": "Dieses Feld ist erforderlich",
     "string": "Dieses Feld muss eine Zeichenkette sein",
-    "number": "Dieses Feld muss eine Zahl sein"
+    "number": "Dieses Feld muss eine Zahl sein",
+    "nonnegative": "Dieses Feld muss eine nicht-negative Zahl sein",
+    "url": "Dieses Feld muss eine gültige URL sein"
   }
 }

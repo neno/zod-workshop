@@ -9,28 +9,30 @@ import Link from "next/link";
 import {TextField} from "@/components/TextField";
 import {useRouter} from "next/navigation";
 
-const FormSchema = z.object({
-  title: z.string().nonempty(),
-  tagline: z.string(),
-  release_date: z.string(),
-  runtime: z.coerce.number().nonnegative().optional(),
-  genres: z.string(),
-  overview: z.string(),
-  budget: z.coerce.number().nonnegative().optional(),
-  revenue: z.coerce.number().nonnegative().optional(),
-  homepage: z.string().url(),
+const FormSchema = (errors) => z.object({
+  title: z.string(errors?.string).nonempty({ message: errors.string.required_error}),
+  tagline: z.string(errors?.string),
+  release_date: z.string(errors?.string),
+  runtime: z.coerce.number(errors?.number).nonnegative(errors.nonnegative).optional(),
+  genres: z.string(errors?.string),
+  overview: z.string(errors?.string),
+  budget: z.coerce.number(errors?.number).nonnegative(errors.nonnegative).optional(),
+  revenue: z.coerce.number(errors?.number).nonnegative(errors.nonnegative).optional(),
+  homepage: z.string(errors?.string).url(errors?.url),
 });
 
 type FormInput = z.infer<typeof FormSchema>;
 
 interface MovieFormProps {
   movie: IMovie;
+  translations: any;
+  errors: any;
 }
 
-export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
+export const MovieForm: FC<MovieFormProps> = ({ movie, translations, errors }) => {
   const router = useRouter();
   const methods = useForm<FormInput>({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(FormSchema(errors)),
     defaultValues: {
       ...movie,
     },
@@ -57,7 +59,7 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
           <legend className="text-3xl font-bold">Movie Details</legend>
           <ol className="grid grid-cols-6 gap-8 mt-8">
             <li className="col-span-6">
-              <TextField label="Title" name="title" />
+              <TextField label={translations.title} name="title" />
             </li>
             <li className="col-span-6">
               <TextField label="Tagline" name="tagline" />
