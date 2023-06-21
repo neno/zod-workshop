@@ -1,7 +1,6 @@
 'use client';
 
 import {MouseEvent, useEffect, useState, useTransition} from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { IconPlus, IconTrash } from './icons';
@@ -18,40 +17,35 @@ export function Movie({
   poster_path,
   isSelected: isSelected,
 }: MovieProps) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [isPending] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
-  const [error, setError] = useState<string | null>(null)
   const Icon = isSelected ? IconTrash : IconPlus;
   const isMutating = isPending || isFetching;
+  const [errorMessage, setErrorMessage] = useState<undefined | string>(undefined)
 
-  async function handleClick(e: MouseEvent<HTMLButtonElement>) {
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setIsFetching(true);
-    let res;
 
-    if (isSelected) {
-      // @ts-ignore
-      res = await deleteMovie(id);
-    } else {
-      res = await addMovie(id)
-    }
+    try {
+      setIsFetching(true);
 
-    setIsFetching(false);
+      if (isSelected) {
+        await deleteMovie(id);
+      } else {
+        await addMovie(id)
+      }
 
-    if (res?.error) {
-      setError(error || null);
-    } else {
-      startTransition(() => {
-        router.refresh();
-      });
+      setIsFetching(false);
+    } catch (error) {
+      setErrorMessage(error as string)
     }
   }
+
   useEffect(() => {
-    if (error) {
-      throw new Error(error);
+    if (errorMessage) {
+      throw new Error(errorMessage)
     }
-  }, [error]);
+  })
 
   return (
     <Card title={title} poster_path={poster_path}>

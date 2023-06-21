@@ -47,7 +47,7 @@ const FormSchema = (errors: ErrorsType) =>
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
       .optional(),
-    homepage: z.string(errors?.string).url(errors?.url),
+    homepage: z.union([z.literal(""), z.string(errors?.string).trim().url(errors?.url)])
   });
 
 interface MovieFormProps {
