@@ -3,8 +3,14 @@ import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
 import {MovieForm} from "@/components/MovieForm";
 import {useTranslations} from "next-intl";
+import {FC} from "react";
+import {IMovie} from "@/models/movie";
 
-const MovieFormTemplate = ({ movie }) => {
+interface MovieFormTemplateProps {
+  movie: IMovie;
+}
+
+const MovieFormTemplate: FC<MovieFormTemplateProps> = ({ movie }) => {
   const t = useTranslations('');
   const translations = {
     legend: t('movie.form.title'),

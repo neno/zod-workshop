@@ -9,7 +9,23 @@ import Link from "next/link";
 import {TextField} from "@/components/TextField";
 import {useRouter} from "next/navigation";
 
-const FormSchema = (errors) => z.object({
+interface ErrorsType {
+  string: {
+    required_error: string;
+    invalid_type_error: string;
+  },
+  number: {
+    required_error: string;
+    invalid_type_error: string;
+  },
+  nonnegative: {
+    message: string;
+  },
+  url: {
+    message: string;
+  }
+}
+const FormSchema = (errors : ErrorsType) => z.object({
   title: z.string(errors?.string).nonempty({ message: errors.string.required_error}),
   tagline: z.string(errors?.string),
   release_date: z.string(errors?.string),
