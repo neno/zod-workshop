@@ -4,11 +4,12 @@ import {FieldError, useFormContext} from "react-hook-form";
 interface FieldProps {
   label: string;
   multiline?: boolean;
+  required?: boolean;
   name: string;
   type?: "text" | "email" | "number" | "date";
 }
 
-export const TextField: FC<FieldProps> = ({ label, name, multiline, type = "text" }) => {
+export const TextField: FC<FieldProps> = ({ label, name, multiline, type = "text", required }) => {
   const {
     register,
     formState: { errors}
@@ -22,9 +23,13 @@ export const TextField: FC<FieldProps> = ({ label, name, multiline, type = "text
         <span className="label-text">{label}</span>
       </label>
       {multiline ?
-        <textarea id={name} rows={4} className="textarea textarea-bordered" {...register(name)} />
+        <textarea id={name} rows={4} className="textarea textarea-bordered" {...register(name, {
+          required
+        })}  />
         :
-        <input id={name} type={type} className="input input-bordered" {...register(name)}  />
+        <input required={required} id={name} type={type} className="input input-bordered" {...register(name, {
+          required
+        })}  />
       }
       {error && <p className="text-xs text-error">{error.message}</p>}
     </div>
