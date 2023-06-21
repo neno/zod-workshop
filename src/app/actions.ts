@@ -7,7 +7,6 @@ import {FormInput} from "@/components/MovieForm";
 export async function addMovie(id: number) {
 
   const fullMovieData = await getMovieById(id);
-  console.log('genres', JSON.stringify(fullMovieData?.genres));
 
   if (fullMovieData) {
     const movie = {
@@ -31,18 +30,43 @@ export async function addMovie(id: number) {
     await prisma.movie.create({
       data: movie,
     });
+  } else {
+    return {
+      error: 'Movie was not found in ',
+    }
   }
 }
 
 export async function updateMovie(id: number, data: FormInput) {
-  await prisma.movie.update({
-    where: { id },
-    data,
-  })
+
+  try {
+    const movie = await prisma.movie.update({
+      where: { id },
+      data,
+    })
+
+    return {
+      movie
+    }
+  } catch (error) {
+    return {
+      error: 'There was error deleting the movie'
+    }
+  }
 }
 
 export async function deleteMovie(id: number) {
-  await prisma.movie.delete({
-    where: { id },
-  });
+  try {
+    const movie = await prisma.movie.delete({
+      where: { id },
+    });
+
+    return {
+      movie
+    }
+  } catch (error) {
+    return {
+      error: 'There was error deleting the movie'
+    }
+  }
 }
