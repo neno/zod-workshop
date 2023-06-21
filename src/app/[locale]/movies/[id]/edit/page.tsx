@@ -2,6 +2,36 @@ import { NextImage } from '@/components/NextImage';
 import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
 import {MovieForm} from "@/components/MovieForm";
+import {useTranslations} from "next-intl";
+
+const MovieFormTemplate = ({ movie }) => {
+  const t = useTranslations('');
+  const translations = {
+    legend: t('movie.form.title'),
+    title: t('movie.title'),
+    overview: t('movie.overview'),
+    tagline: t('movie.tagline'),
+    released: t('movie.released'),
+    runtime: t('movie.runtime'),
+    genre: t('movie.genre'),
+    budget: t('movie.budget'),
+    revenue: t('movie.revenue'),
+    homepage: t('movie.homepage'),
+    submit: t('movie.form.submit'),
+    cancel: t('movie.form.cancel'),
+  }
+
+  const errors = {
+    string: {
+      required_error: t('errors.required'),
+      invalid_type_error: t('errors.string'),
+    }
+  };
+
+  return (
+    <MovieForm movie={movie} translations={translations} errors={errors} />
+  )
+}
 
 export default async function MoviePage({
   params: { id },
@@ -28,7 +58,7 @@ export default async function MoviePage({
             />
           </div>
           <div>
-            <MovieForm movie={movie} />
+            <MovieFormTemplate movie={movie} />
           </div>
         </div>
       </VerticalContainer>
