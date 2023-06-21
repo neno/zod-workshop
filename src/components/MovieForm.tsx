@@ -8,6 +8,7 @@ import {FC} from "react";
 import Link from "next/link";
 import {TextField} from "@/components/TextField";
 import {useRouter} from "next/navigation";
+import {updateMovie} from "@/app/actions";
 
 const FormSchema = z.object({
   title: z.string().nonempty(),
@@ -21,7 +22,7 @@ const FormSchema = z.object({
   homepage: z.string().url(),
 });
 
-type FormInput = z.infer<typeof FormSchema>;
+export type FormInput = z.infer<typeof FormSchema>;
 
 interface MovieFormProps {
   movie: IMovie;
@@ -38,16 +39,7 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
   const { handleSubmit } = methods;
 
   const submit = async (data: FormInput) => {
-    try {
-      await fetch(`/api/movies`, {
-        method: 'PATCH',
-        body: JSON.stringify({...data, id: movie.id}),
-      })
-
-      router.push(`/movies/${movie.id}`);
-    } catch (error) {
-      console.error(error)
-    }
+    updateMovie(movie.id, data)
   }
 
   return (

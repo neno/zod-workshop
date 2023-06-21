@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { IconPlus, IconTrash } from './icons';
 import { IMovieItem } from '@/models/movie-item';
+import {addMovie, deleteMovie} from "@/app/actions";
 
 interface MovieProps extends IMovieItem {
   isSelected: boolean;
@@ -28,10 +29,12 @@ export function Movie({
     e.preventDefault();
 
     setIsFetching(true);
-    await fetch(`/api/movies`, {
-      method,
-      body: JSON.stringify({ id }),
-    });
+
+    if (isSelected) {
+      deleteMovie(id)
+    } else {
+      addMovie(id)
+    }
 
     setIsFetching(false);
 
