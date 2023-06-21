@@ -29,6 +29,7 @@ interface MovieFormProps {
 }
 
 export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
+  const router = useRouter();
   const methods = useForm<FormInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -38,7 +39,8 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
   const { handleSubmit } = methods;
 
   const submit = async (data: FormInput) => {
-    updateMovie(movie.id, data)
+    updateMovie(movie.id, data);
+    router.push(`/movies/${movie.id}`);
   }
 
   return (
