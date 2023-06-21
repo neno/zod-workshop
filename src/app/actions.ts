@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma";
 import {getMovieById} from "@/lib/api";
-import {IMovie} from "@/models/movie";
 import {FormInput} from "@/components/MovieForm";
 
 export async function addMovie(id: number) {

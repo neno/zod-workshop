@@ -29,7 +29,6 @@ interface MovieFormProps {
 }
 
 export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
-  const router = useRouter();
   const methods = useForm<FormInput>({
     resolver: zodResolver(FormSchema),
     defaultValues: {

@@ -23,7 +23,6 @@ export function Movie({
   const [isFetching, setIsFetching] = useState(false);
   const Icon = isSelected ? IconTrash : IconPlus;
   const isMutating = isPending || isFetching;
-  const method = isSelected ? 'DELETE' : 'POST';
 
   async function handleClick(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
