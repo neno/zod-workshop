@@ -39,7 +39,7 @@ export const MovieForm: FC<MovieFormProps> = ({ movie }) => {
   const { handleSubmit } = methods;
 
   const submit = async (data: FormInput) => {
-    updateMovie(movie.id, data);
+    await updateMovie(movie.id, data);
     router.push(`/movies/${movie.id}`);
   }
 
