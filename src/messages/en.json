@@ -1,0 +1,29 @@
+{
+  "movie": {
+    "title": "Title",
+    "tagline": "Tagline",
+    "released": "Released",
+    "runtime": "Runtime",
+    "genre": "Genre",
+    "overview": "Overview",
+    "budget": "Budget",
+    "revenue": "Revenue",
+    "homepage": "Homepage",
+    "imdbId": "IMDB ID",
+    "popularity": "Popularity",
+    "voteAverage": "Vote Average",
+    "voteCount": "Vote Count",
+    "form": {
+      "title": "Movie Details",
+      "submit": "Submit",
+      "cancel": "Cancel"
+    }
+  },
+  "errors": {
+    "required": "This field is required",
+    "string": "This field must be a string",
+    "number": "This field must be a number",
+    "nonnegative": "This field must be a non-negative number",
+    "url": "This field must be a valid URL"
+  }
+}
