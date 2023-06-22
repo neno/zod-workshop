@@ -12,7 +12,7 @@ const fetchReviews = async (
 export async function Reviews({ movieId }: { movieId: number }) {
   const data = await fetchReviews(movieId);
 
-  if (data && data.results) {
+  if (data && data.results.length > 0) {
     return (
       <ul className='flex flex-col gap-4'>
         {data.results.map((review) => (

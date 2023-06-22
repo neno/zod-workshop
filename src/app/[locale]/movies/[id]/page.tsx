@@ -2,9 +2,9 @@ import { NextImage } from '@/components/NextImage';
 import { Reviews } from '@/components/Reviews';
 import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
-import {Suspense} from 'react';
-import {DefList} from "@/components/DefList";
-import Link from "next/link";
+import { Suspense } from 'react';
+import { DefList } from '@/components/DefList';
+import Link from 'next/link';
 
 export default async function MoviePage({
   params: { id },
@@ -20,8 +20,8 @@ export default async function MoviePage({
   if (movie) {
     return (
       <VerticalContainer>
-        <div className='grid grid-cols-4 gap-8'>
-          <div>
+        <div className='grid grid-cols-12 gap-8'>
+          <div className='col-span-4'>
             <NextImage
               src={movie.poster_path}
               alt={movie.title}
@@ -31,9 +31,12 @@ export default async function MoviePage({
               height={960}
             />
           </div>
-          <div className='col-span-3'>
+          <div className='col-span-8'>
             <DefList movie={movie} />
-            <Link className="btn btn-primary mt-8" href={`/movies/${movie.id}/edit`}>
+            <Link
+              className='btn btn-primary mt-8'
+              href={`/movies/${movie.id}/edit`}
+            >
               Edit
             </Link>
           </div>

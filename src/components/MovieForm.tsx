@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import {IMovie} from "@/models/movie";
-import {FC} from "react";
-import Link from "next/link";
-import {TextField} from "@/components/TextField";
-import {useRouter} from "next/navigation";
-import {updateMovie} from "@/app/actions";
+import { IMovie } from '@/models/movie';
+import { FC } from 'react';
+import Link from 'next/link';
+import { TextField } from '@/components/TextField';
+import { useRouter } from 'next/navigation';
+import { updateMovie } from '@/app/actions';
 
 interface ErrorsType {
   string: {
@@ -47,7 +47,10 @@ const FormSchema = (errors: ErrorsType) =>
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
       .optional(),
-    homepage: z.union([z.literal(""), z.string(errors?.string).trim().url(errors?.url)])
+    homepage: z.union([
+      z.literal(''),
+      z.string(errors?.string).trim().url(errors?.url),
+    ]),
   });
 
 interface MovieFormProps {
@@ -75,7 +78,7 @@ export const MovieForm: FC<MovieFormProps> = ({
   const submit = async (data: ResolvedSchema) => {
     await updateMovie(movie.id, data);
     router.push(`/movies/${movie.id}`);
-  }
+  };
 
   return (
     <FormProvider {...methods}>
@@ -86,7 +89,7 @@ export const MovieForm: FC<MovieFormProps> = ({
       >
         <fieldset>
           <legend className='text-3xl font-bold'>Movie Details</legend>
-          <ol className='grid grid-cols-6 gap-8 mt-8'>
+          <ol className='grid grid-cols-6 gap-4 mt-8'>
             <li className='col-span-6'>
               <TextField label={translations.title} name='title' />
             </li>
