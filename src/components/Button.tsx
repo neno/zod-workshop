@@ -22,8 +22,8 @@ export const Button: FC<IButtonProps> = ({
   const styles = clsxm(
     'inline-block relative px-4 py-2 font-medium color-white bg-black',
     {
-      // 'bg-primary text-white': mode === 'primary',
-      // 'bg-danger text-white': mode === 'danger',
+      'bg-primary text-white': mode === 'primary',
+      'bg-danger text-white': mode === 'danger',
       className,
     }
   );

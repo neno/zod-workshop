@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { IMovie } from '@/models/movie';
-import { FC } from 'react';
-import Link from 'next/link';
-import { TextField } from '@/components/TextField';
-import { useRouter } from 'next/navigation';
+import {IMovie} from "@/models/movie";
+import {FC} from "react";
+import Link from "next/link";
+import {TextField} from "@/components/TextField";
+import {useRouter} from "next/navigation";
+import {updateMovie} from "@/app/actions";
 
 interface ErrorsType {
   string: {
@@ -46,7 +47,7 @@ const FormSchema = (errors: ErrorsType) =>
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
       .optional(),
-    homepage: z.string(errors?.string).url(errors?.url),
+    homepage: z.union([z.literal(""), z.string(errors?.string).trim().url(errors?.url)])
   });
 
 interface MovieFormProps {
@@ -72,17 +73,9 @@ export const MovieForm: FC<MovieFormProps> = ({
   const { handleSubmit } = methods;
 
   const submit = async (data: ResolvedSchema) => {
-    try {
-      await fetch(`/api/movies`, {
-        method: 'PATCH',
-        body: JSON.stringify({ ...data, id: movie.id }),
-      });
-
-      router.push(`/movies/${movie.id}`);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    await updateMovie(movie.id, data);
+    router.push(`/movies/${movie.id}`);
+  }
 
   return (
     <FormProvider {...methods}>

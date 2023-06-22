@@ -1,11 +1,11 @@
 'use client';
 
-import { MouseEvent, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import {MouseEvent, useEffect, useState, useTransition} from 'react';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
 import { IconPlus, IconTrash } from './icons';
 import { IMovieItem } from '@/models/movie-item';
+import {addMovie, deleteMovie} from "@/app/actions";
 
 interface MovieProps extends IMovieItem {
   isSelected: boolean;
@@ -17,28 +17,35 @@ export function Movie({
   poster_path,
   isSelected: isSelected,
 }: MovieProps) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [isPending] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
   const Icon = isSelected ? IconTrash : IconPlus;
   const isMutating = isPending || isFetching;
-  const method = isSelected ? 'DELETE' : 'POST';
+  const [errorMessage, setErrorMessage] = useState<undefined | string>(undefined)
 
-  async function handleClick(e: MouseEvent<HTMLButtonElement>) {
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    setIsFetching(true);
-    await fetch(`/api/movies`, {
-      method,
-      body: JSON.stringify({ id }),
-    });
+    try {
+      setIsFetching(true);
 
-    setIsFetching(false);
+      if (isSelected) {
+        await deleteMovie(id);
+      } else {
+        await addMovie(id)
+      }
 
-    startTransition(() => {
-      router.refresh();
-    });
+      setIsFetching(false);
+    } catch (error) {
+      setErrorMessage(error as string)
+    }
   }
+
+  useEffect(() => {
+    if (errorMessage) {
+      throw new Error(errorMessage)
+    }
+  })
 
   return (
     <Card title={title} poster_path={poster_path}>
