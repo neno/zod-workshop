@@ -1,20 +1,16 @@
-import {z} from "zod";
+export interface Review {
+  author: string;
+  author_details: AuthorDetails;
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}
 
-const authorDetailsSchema = z.object({
-  name: z.string(),
-  username: z.string(),
-  avatar_path: z.string().nullable(),
-  rating: z.number().nullable()
-})
-
-export const reviewSchema = z.object({
-  author: z.string(),
-  author_details: authorDetailsSchema.optional(),
-  content: z.string(),
-  created_at: z.string(),
-  id: z.string(),
-  updated_at: z.string(),
-  url: z.string(),
-})
-
-
+export interface AuthorDetails {
+  name: string;
+  username: string;
+  avatar_path: string;
+  rating: number;
+}
