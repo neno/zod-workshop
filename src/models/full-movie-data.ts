@@ -1,60 +1,71 @@
+import * as z from "zod";
 
+const collectionSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  poster_path: z.string().nullable(),
+  backdrop_path: z.string(),
+})
 
-interface BelongsToCollection {
-  id: number;
-  name: string;
-  poster_path: string;
-  backdrop_path: string;
-}
+const genreSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
 
-interface Genre {
-  id: number;
-  name: string;
-}
+const productionCompanySchema = z.object({
+  id: z.number(),
+  logo_path: z.string(),
+  name: z.string(),
+  origin_country: z.string()
+})
 
-interface ProductionCompany {
-  id: number;
-  logo_path: string;
-  name: string;
-  origin_country: string;
-}
+const productionCountrySchema = z.object({
+  iso_3166_1: z.string(),
+  name: z.string()
+})
 
-interface ProductionCountry {
-  iso_3166_1: string;
-  name: string;
-}
+const spokenLanguageSchema = z.object({
+  english_name: z.string(),
+  iso_639_1: z.string(),
+  name: z.string()
+})
 
-interface SpokenLanguage {
-  english_name: string;
-  iso_639_1: string;
-  name: string;
-}
+export const fullMovieSchema = z.object({
+  adult: z.boolean(),
+  backdrop_path: z.string().nullable(),
+  belongs_to_collection: z.array(
+    collectionSchema
+  ).optional(),
+  budget: z.number().optional(),
+  genres: z.array(
+    genreSchema
+  ).optional(),
+  homepage: z.string().optional(),
+  id: z.number(),
+  imdb_id: z.string().optional(),
+  original_language: z.string(),
+  original_title: z.string(),
+  overview: z.string(),
+  popularity: z.number(),
+  poster_path: z.string().nullable(),
+  production_companies: z.array(
+    productionCompanySchema
+  ).optional(),
+  production_countries: z.array(
+    productionCountrySchema
+  ).optional(),
+  release_date: z.string(),
+  revenue: z.number().optional(),
+  runtime: z.number().optional(),
+  spoken_languages: z.array(
+    spokenLanguageSchema
+  ).optional(),
+  status: z.string().optional(),
+  tagline: z.string().optional(),
+  title: z.string(),
+  video: z.boolean(),
+  vote_average: z.number(),
+  vote_count: z.number()
+})
 
-export interface FullMovieData {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: BelongsToCollection;
-  budget: number;
-  genres: Genre[];
-  homepage: string;
-  id: number;
-  imdb_id: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: ProductionCompany[];
-  production_countries: ProductionCountry[];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: SpokenLanguage[];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-
+export type FullMovieData = z.infer<typeof fullMovieSchema>
