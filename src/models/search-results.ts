@@ -1,13 +1,8 @@
-import {fullMovieSchema} from "@/models/full-movie-data";
-import * as z from "zod";
+import { IMovieItem } from './movie-item';
 
-export const apiSearchResultSchema = z.object({
-  page: z.number(),
-  total_pages: z.number(),
-  total_results: z.number(),
-  results: z.array(
-    fullMovieSchema
-  ),
-});
-
-export type IApiSearchResult = z.infer<typeof apiSearchResultSchema>
+export interface IApiSearchResult {
+  page: number;
+  results: IMovieItem[];
+  total_pages: number;
+  total_results: number;
+}
