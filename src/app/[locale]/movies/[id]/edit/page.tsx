@@ -1,13 +1,13 @@
 import { NextImage } from '@/components/NextImage';
 import { VerticalContainer } from '@/components/VerticalContainer';
 import prisma from '@/lib/prisma';
-import {MovieForm} from "@/components/MovieForm";
-import {useTranslations} from "next-intl";
-import {FC} from "react";
-import {IMovie} from "@/models/movie";
+import { MovieForm } from '@/components/MovieForm';
+import { useTranslations } from 'next-intl';
+import { FC } from 'react';
+import { MovieType } from '@/models';
 
 interface MovieFormTemplateProps {
-  movie: IMovie;
+  movie: MovieType;
 }
 
 const MovieFormTemplate: FC<MovieFormTemplateProps> = ({ movie }) => {
@@ -25,7 +25,7 @@ const MovieFormTemplate: FC<MovieFormTemplateProps> = ({ movie }) => {
     homepage: t('movie.homepage'),
     submit: t('movie.form.submit'),
     cancel: t('movie.form.cancel'),
-  }
+  };
 
   const errors = {
     string: {
@@ -41,13 +41,13 @@ const MovieFormTemplate: FC<MovieFormTemplateProps> = ({ movie }) => {
     },
     url: {
       message: t('errors.url'),
-    }
+    },
   };
 
   return (
     <MovieForm movie={movie} translations={translations} errors={errors} />
-  )
-}
+  );
+};
 
 export default async function MoviePage({
   params: { id },

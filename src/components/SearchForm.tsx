@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function SearchForm() {
+export function SearchForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('search');
@@ -15,7 +15,7 @@ export default function SearchForm() {
   }
 
   return (
-    <div className='max-w-2xl mx-auto py-4'>
+    <div className='max-w-2xl'>
       <form onSubmit={handleSubmit}>
         <label className='block border border-gray-500 p-1 rounded bg-black'>
           <input

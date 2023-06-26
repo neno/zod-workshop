@@ -1,7 +1,7 @@
 import { Gallery } from '@/components/Gallery';
 import { Movie } from '@/components/Movie';
 import { searchMovies } from '@/lib/api';
-import { IMovieItem } from '@/models/movie-item';
+import { MovieItemType } from '@/models';
 
 interface SearchPageProps {
   searchParams: { search: string };
@@ -15,7 +15,7 @@ export default async function SearchPage({
   if (data && data.results) {
     return (
       <Gallery>
-        {data.results.map((movie: IMovieItem) => (
+        {data.results.map((movie: MovieItemType) => (
           <Movie key={movie.id} {...movie} isSelected={false} />
         ))}
       </Gallery>

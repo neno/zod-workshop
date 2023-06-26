@@ -17,4 +17,13 @@ export const reviewSchema = z.object({
   url: z.string(),
 })
 
+export const tmdbReviewsResultSchema = z.object({
+  page: z.number(),
+  total_pages: z.number(),
+  total_results: z.number(),
+  results: z.array(
+    reviewSchema
+  ),
+});
 
+export type TmdbReviewsResultType = z.infer<typeof tmdbReviewsResultSchema>

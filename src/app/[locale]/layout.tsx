@@ -1,10 +1,10 @@
 import { Container } from '@/components/Container';
 import { Nav } from '@/components/Nav';
-import SearchForm from '@/components/SearchForm';
+import { SearchForm } from '@/components/SearchForm';
 import { VerticalContainer } from '@/components/VerticalContainer';
 import '../globals.css';
-import {notFound} from "next/navigation";
-import {useLocale} from "next-intl";
+import { notFound } from 'next/navigation';
+import { useLocale } from 'next-intl';
 
 export const metadata = {
   title: 'Create Next App',
@@ -29,9 +29,6 @@ export default async function RootLayout({
       <body>
         <VerticalContainer>
           <header>
-            <Container>
-              <SearchForm />
-            </Container>
             <Container>
               <Nav />
             </Container>

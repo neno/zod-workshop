@@ -3,7 +3,7 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { IMovie } from '@/models/movie';
+import { IMovie } from '@/models/generated/movie';
 import { FC } from 'react';
 import Link from 'next/link';
 import { TextField } from '@/components/TextField';

@@ -1,13 +1,13 @@
-import {fullMovieSchema} from "@/models/full-movie-data";
 import * as z from "zod";
+import {tmdbDetailMovieSchema} from "@/models/movie-types";
 
-export const apiSearchResultSchema = z.object({
+export const tmdbSearchResultSchema = z.object({
   page: z.number(),
   total_pages: z.number(),
   total_results: z.number(),
   results: z.array(
-    fullMovieSchema
+    tmdbDetailMovieSchema
   ),
 });
 
-export type IApiSearchResult = z.infer<typeof apiSearchResultSchema>
+export type TmdbSearchResultsType = z.infer<typeof tmdbSearchResultSchema>

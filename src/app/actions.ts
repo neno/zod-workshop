@@ -3,52 +3,34 @@
 import prisma from "@/lib/prisma";
 import {getMovieById} from "@/lib/api";
 import { z } from "zod";
+import { IMovie } from '@/models/generated/movie';
+import { tmdbDetailMovieSchema } from '@/models/movie-types';
 
-const movieDataSchema = z.object({
-  id: z.number(),
-  imdb_id: z.string(),
-  title: z.string(),
-  tagline: z.string(),
-  poster_path: z.string(),
-  release_date: z.string(),
-  runtime: z.number(),
-  overview: z.string(),
-  genres: z.array(z.object({ name: z.string() }))
-    .transform((value) => value.map((genre) => genre.name).join(', ')),
-  budget: z.number(),
-  revenue: z.number(),
-  homepage: z.string(),
-  popularity: z.number(),
-  vote_average: z.number(),
-  vote_count: z.number(),
-});
+// const movieDataSchema = z.object({
+//   id: z.number(),
+//   imdb_id: z.string(),
+//   title: z.string(),
+//   tagline: z.string(),
+//   poster_path: z.string(),
+//   release_date: z.string(),
+//   runtime: z.number(),
+//   overview: z.string(),
+//   genres: z.array(z.object({ name: z.string() }))
+//     .transform((value) => value.map((genre) => genre.name).join(', ')),
+//   budget: z.number(),
+//   revenue: z.number(),
+//   homepage: z.string(),
+//   popularity: z.number(),
+//   vote_average: z.number(),
+//   vote_count: z.number(),
+// });
 
-export async function addMovie(id: number) {
-
+export async function addMovie(id: number): Promise<IMovie> {
   const fullMovieData = await getMovieById(id);
-
-  const validatedMovieData = movieDataSchema.parse(fullMovieData);
-
-  const movie = {
-    id: validatedMovieData.id,
-    imdb_id: validatedMovieData.imdb_id,
-    title: validatedMovieData.title,
-    tagline: validatedMovieData.tagline,
-    poster_path: validatedMovieData.poster_path,
-    release_date: validatedMovieData.release_date,
-    runtime: validatedMovieData.runtime,
-    overview: validatedMovieData.overview,
-    genres: validatedMovieData.genres,
-    budget: validatedMovieData.budget,
-    revenue: validatedMovieData.revenue,
-    homepage: validatedMovieData.homepage,
-    popularity: validatedMovieData.popularity,
-    vote_average: validatedMovieData.vote_average,
-    vote_count: validatedMovieData.vote_count,
-  };
+  const validatedMovieData: Omit<IMovie, 'updatedAt' | 'createdAt' | 'id'> = tmdbDetailMovieSchema.parse(fullMovieData);
 
   return await prisma.movie.create({
-    data: movie,
+    data: validatedMovieData,
   });
 }
 

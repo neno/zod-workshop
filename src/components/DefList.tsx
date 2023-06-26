@@ -1,6 +1,6 @@
-import { IMovie } from '@/models/movie';
+import { IMovie } from '@/models/generated/movie';
 import { FC } from 'react';
-import {useTranslations} from "next-intl";
+import { useTranslations } from 'next-intl';
 
 interface DefListProps {
   movie: IMovie;
@@ -50,4 +50,4 @@ export const DefList: FC<DefListProps> = ({ movie }) => {
       <dd className='col-span-2'>{movie.vote_count}</dd>
     </dl>
   );
-}
+};

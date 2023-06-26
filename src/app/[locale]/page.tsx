@@ -1,7 +1,7 @@
 import { Gallery } from '@/components/Gallery';
 import { Movie } from '@/components/Movie';
 import prisma from '@/lib/prisma';
-import { IMovieItem } from '@/models/movie-item';
+import { MovieItemType } from '@/models';
 import Link from 'next/link';
 
 export default async function HomePage() {
@@ -10,7 +10,7 @@ export default async function HomePage() {
   if (movies && movies.length > 0) {
     return (
       <Gallery>
-        {movies.map((movie: IMovieItem) => (
+        {movies.map((movie: MovieItemType) => (
           <Link key={movie.id} href={`/movies/${movie.id}`}>
             <Movie {...movie} isSelected={true} data-superjson />
           </Link>

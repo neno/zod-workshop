@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { MovieSchema } from './generated';
 
 const collectionSchema = z.object({
   id: z.number(),
@@ -30,16 +31,15 @@ const spokenLanguageSchema = z.object({
   name: z.string()
 })
 
-export const fullMovieSchema = z.object({
+export const tmdbDetailMovieSchema = z.object({
   adult: z.boolean(),
   backdrop_path: z.string().nullable(),
   belongs_to_collection: z.array(
     collectionSchema
   ).optional(),
   budget: z.number().optional(),
-  genres: z.array(
-    genreSchema
-  ).optional(),
+  genres: z.array(genreSchema)
+    .transform((value) => value.map((genre) => genre.name).join(', ')),
   homepage: z.string().optional(),
   id: z.number(),
   imdb_id: z.string().optional(),
@@ -66,6 +66,17 @@ export const fullMovieSchema = z.object({
   video: z.boolean(),
   vote_average: z.number(),
   vote_count: z.number()
-})
+});
 
-export type FullMovieData = z.infer<typeof fullMovieSchema>
+export type TmdbDetailMovieType = z.infer<typeof tmdbDetailMovieSchema>;
+
+export const newMovieSchema = MovieSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type MovieType = z.infer<typeof MovieSchema>
+
+
+export type MovieItemType = Pick<MovieType, 'id' | 'title' | 'poster_path' | 'release_date'>

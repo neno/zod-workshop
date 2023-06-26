@@ -1,9 +1,9 @@
 import { getMovieReviews } from '@/lib/api';
-import { IApiReviewsByMovieResult } from '@/models/api-review-results';
+import { TmdbReviewsResultType } from '@/models/api-review-results';
 
 const fetchReviews = async (
   movieId: number
-): Promise<IApiReviewsByMovieResult | undefined> => {
+): Promise<TmdbReviewsResultType | undefined> => {
   const data = await getMovieReviews(movieId);
   return new Promise((resolve) => setTimeout(() => resolve(data), 2000));
 };

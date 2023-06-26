@@ -1,6 +1,5 @@
-import {IApiReviewsByMovieResult, reviewResultSchema} from '@/models/api-review-results';
-import {FullMovieData, fullMovieSchema} from '@/models/full-movie-data';
-import {IApiSearchResult, apiSearchResultSchema} from '@/models/search-results';
+
+import { TmdbDetailMovieType, TmdbReviewsResultType, TmdbSearchResultsType, tmdbDetailMovieSchema, tmdbReviewsResultSchema, tmdbSearchResultSchema } from '@/models';
 
 const fetchData = async (path: string, params?: string) => {
   const url = `https://api.themoviedb.org/3/${path}?api_key=00f3f32198696caff437631c007a7548${params ? `&${params}` : ''}`;
@@ -10,15 +9,15 @@ const fetchData = async (path: string, params?: string) => {
   return await res.json();
 }
 
-export async function getPopularMovies(): Promise<IApiSearchResult> {
+export async function getPopularMovies(): Promise<TmdbSearchResultsType> {
   // `https://api.themoviedb.org/3/movie/popular?api_key=00f3f32198696caff437631c007a7548`
   return await fetchData('movie/popular');
 }
 
-export async function searchMovies(searchTerm: string): Promise<IApiSearchResult | undefined> {
+export async function searchMovies(searchTerm: string): Promise<TmdbSearchResultsType | undefined> {
   if (searchTerm) {
     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
-    return apiSearchResultSchema.parse(searchResult);
+    return tmdbSearchResultSchema.parse(searchResult);
   }
 
   return undefined;
@@ -27,14 +26,14 @@ export async function searchMovies(searchTerm: string): Promise<IApiSearchResult
   // return await Promise.resolve({ page: 1, results: []})
 }
 
-export async function getMovieById(id: number): Promise<FullMovieData | undefined> {
+export async function getMovieById(id: number): Promise<TmdbDetailMovieType | undefined> {
   // `https://api.themoviedb.org/3/movie/popular?api_key=00f3f32198696caff437631c007a7548`
   const movie = await fetchData(`movie/${id}`);
-  return fullMovieSchema.parse(movie);
+  return tmdbDetailMovieSchema.parse(movie);
 }
 
-export async function getMovieReviews(id: number): Promise<IApiReviewsByMovieResult | undefined> {
+export async function getMovieReviews(id: number): Promise<TmdbReviewsResultType | undefined> {
   // `https://api.themoviedb.org/3/movie/popular?api_key=00f3f32198696caff437631c007a7548`
   const reviews = await fetchData(`movie/${id}/reviews`);
-  return reviewResultSchema.parse(reviews);
+  return tmdbReviewsResultSchema.parse(reviews);
 }
