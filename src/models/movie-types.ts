@@ -38,7 +38,7 @@ export const tmdbDetailMovieSchema = z.object({
     collectionSchema
   ).optional(),
   budget: z.number().optional(),
-  genres: z.array(genreSchema),
+  genres: z.array(genreSchema).optional(),
   homepage: z.string().optional(),
   id: z.number(),
   imdb_id: z.string().optional(),
@@ -46,7 +46,7 @@ export const tmdbDetailMovieSchema = z.object({
   original_title: z.string(),
   overview: z.string(),
   popularity: z.number(),
-  poster_path: z.string(),
+  poster_path: z.string().nullable(),
   production_companies: z.array(
     productionCompanySchema
   ).optional(),
