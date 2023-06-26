@@ -1,9 +1,9 @@
-import { IMovie } from '@/models/generated/movie';
 import { FC } from 'react';
 import { useTranslations } from 'next-intl';
+import { MovieType } from '@/models';
 
 interface DefListProps {
-  movie: IMovie;
+  movie: MovieType;
 }
 
 export const DefList: FC<DefListProps> = ({ movie }) => {

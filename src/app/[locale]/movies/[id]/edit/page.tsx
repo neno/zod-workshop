@@ -66,7 +66,7 @@ export default async function MoviePage({
         <div className='grid grid-cols-2 gap-8'>
           <div className='relative'>
             <NextImage
-              src={movie.poster_path}
+              src={movie.poster_path ?? '/no-image.png'}
               alt={movie.title}
               className='object-cover object-center'
               fill

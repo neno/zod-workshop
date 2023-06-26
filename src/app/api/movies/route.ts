@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getMovieById } from '@/lib/api';
+import { TmdbDetailMovieType, newMovieSchema } from '@/models';
 
 export async function GET() {
   const movie = await prisma.movie.findMany();
@@ -14,16 +15,15 @@ export async function POST(request: NextRequest) {
   const { id } = await request.json();
   console.log(request.json());
 
-  const fullMovieData = await getMovieById(id);
+  const fullMovieData: TmdbDetailMovieType | undefined = await getMovieById(id);
   console.log('genres', JSON.stringify(fullMovieData?.genres));
   
   if (fullMovieData) {
-    const movie = {
-      id: fullMovieData.id,
-      imdb_id: fullMovieData.imdb_id,
+    const validMovieData = newMovieSchema.parse({
+      imdb_id: fullMovieData.imdb_id ?? '',
       title: fullMovieData.title,
       tagline: fullMovieData.tagline,
-      poster_path: fullMovieData.poster_path,
+      poster_path: fullMovieData.poster_path ?? '',
       release_date: fullMovieData.release_date,
       runtime: fullMovieData.runtime,
       overview: fullMovieData.overview,
@@ -34,10 +34,10 @@ export async function POST(request: NextRequest) {
       popularity: fullMovieData.popularity,
       vote_average: fullMovieData.vote_average,
       vote_count: fullMovieData.vote_count,
-    }
-    
+    });
+
     const newMovie = await prisma.movie.create({
-      data: movie,
+      data: validMovieData,
     });
 
     return new Response(JSON.stringify(newMovie), {

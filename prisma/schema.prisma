@@ -12,17 +12,17 @@ datasource db {
 
 model Movie {
   id          Int           @id @default(autoincrement())
-  imdb_id     String        @unique
+  imdb_id     String?        @unique
   title       String
-  tagline     String
-  poster_path String
+  tagline     String?
+  poster_path String?
   release_date String
-  runtime     Int
+  runtime     Int?
   overview    String
   genres      String
-  budget      Int
-  revenue     Int
-  homepage    String
+  budget      Int?
+  revenue     Int?
+  homepage    String?
   popularity  Float
   vote_average Float
   vote_count  Int

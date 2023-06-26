@@ -38,8 +38,7 @@ export const tmdbDetailMovieSchema = z.object({
     collectionSchema
   ).optional(),
   budget: z.number().optional(),
-  genres: z.array(genreSchema)
-    .transform((value) => value.map((genre) => genre.name).join(', ')),
+  genres: z.array(genreSchema),
   homepage: z.string().optional(),
   id: z.number(),
   imdb_id: z.string().optional(),
@@ -47,7 +46,7 @@ export const tmdbDetailMovieSchema = z.object({
   original_title: z.string(),
   overview: z.string(),
   popularity: z.number(),
-  poster_path: z.string().nullable(),
+  poster_path: z.string(),
   production_companies: z.array(
     productionCompanySchema
   ).optional(),
@@ -70,11 +69,20 @@ export const tmdbDetailMovieSchema = z.object({
 
 export type TmdbDetailMovieType = z.infer<typeof tmdbDetailMovieSchema>;
 
-export const newMovieSchema = MovieSchema.omit({
+export const newMovieSchema = tmdbDetailMovieSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  adult: true,
+  backdrop_path: true,
+  original_language: true,
+  original_title: true,
+  video: true
+}).extend({
+  genres: z.string(),
 });
+
+export type NewMovieType = z.infer<typeof newMovieSchema>
 
 export type MovieType = z.infer<typeof MovieSchema>
 

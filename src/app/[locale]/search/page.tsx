@@ -10,12 +10,12 @@ interface SearchPageProps {
 export default async function SearchPage({
   searchParams: { search },
 }: SearchPageProps) {
-  const data = await searchMovies(search);
+  const movieItems = await searchMovies(search);
 
-  if (data && data.results) {
+  if (movieItems?.length > 0) {
     return (
       <Gallery>
-        {data.results.map((movie: MovieItemType) => (
+        {movieItems.map((movie: MovieItemType) => (
           <Movie key={movie.id} {...movie} isSelected={false} />
         ))}
       </Gallery>

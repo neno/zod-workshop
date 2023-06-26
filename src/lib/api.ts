@@ -1,5 +1,5 @@
 
-import { TmdbDetailMovieType, TmdbReviewsResultType, TmdbSearchResultsType, tmdbDetailMovieSchema, tmdbReviewsResultSchema, tmdbSearchResultSchema } from '@/models';
+import { MovieItemType, TmdbDetailMovieType, TmdbReviewsResultType, TmdbSearchResultsType, tmdbDetailMovieSchema, tmdbReviewsResultSchema, tmdbSearchResultSchema } from '@/models';
 
 const fetchData = async (path: string, params?: string) => {
   const url = `https://api.themoviedb.org/3/${path}?api_key=00f3f32198696caff437631c007a7548${params ? `&${params}` : ''}`;
@@ -14,17 +14,41 @@ export async function getPopularMovies(): Promise<TmdbSearchResultsType> {
   return await fetchData('movie/popular');
 }
 
-export async function searchMovies(searchTerm: string): Promise<TmdbSearchResultsType | undefined> {
+export async function searchMovies(searchTerm: string): Promise<MovieItemType[]> {
   if (searchTerm) {
     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
-    return tmdbSearchResultSchema.parse(searchResult);
+    const res = tmdbSearchResultSchema.parse(searchResult);
+    const movieItems: MovieItemType[] = res.results.map((movie) => ({
+      id: movie.id,
+      title: movie.title,
+      poster_path: movie.poster_path ?? '',
+      release_date: movie.release_date,
+    }));
+
+    return movieItems;
   }
 
-  return undefined;
-  
-  // console.log('searchMovies - api', searchTerm);
-  // return await Promise.resolve({ page: 1, results: []})
+  return [];
 }
+// export async function searchMovies(searchTerm: string): Promise<MovieItemType[]> {
+//   if (searchTerm) {
+//     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
+//     const res = tmdbSearchResultSchema.parse(searchResult);
+//     const movieItems: MovieItemType[] = res.results.map((movie) => ({
+//       id: movie.id,
+//       title: movie.title,
+//       poster_path: movie.poster_path,
+//       release_date: movie.release_date,
+//     }));
+
+//     return movieItems;
+//   }
+
+//   return [];
+  
+//   // console.log('searchMovies - api', searchTerm);
+//   // return await Promise.resolve({ page: 1, results: []})
+// }
 
 export async function getMovieById(id: number): Promise<TmdbDetailMovieType | undefined> {
   // `https://api.themoviedb.org/3/movie/popular?api_key=00f3f32198696caff437631c007a7548`

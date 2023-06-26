@@ -50,7 +50,7 @@ export function Movie({
   });
 
   return (
-    <Card title={title} poster_path={poster_path}>
+    <Card title={title} poster_path={poster_path ?? '/no-image.png'}>
       <Button disabled={isMutating} onClick={handleClick}>
         <Icon />
       </Button>

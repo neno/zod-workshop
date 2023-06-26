@@ -23,7 +23,7 @@ export default async function MoviePage({
         <div className='grid grid-cols-12 gap-8'>
           <div className='col-span-4'>
             <NextImage
-              src={movie.poster_path}
+              src={movie.poster_path ?? '/no-image.png'}
               alt={movie.title}
               className='w-full h-full object-cover object-center'
               sizes='(min-width: 1280px) 640px, (min-width: 768px) 50vw, 100vw'

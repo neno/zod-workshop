@@ -3,31 +3,13 @@
 import prisma from "@/lib/prisma";
 import {getMovieById} from "@/lib/api";
 import { z } from "zod";
-import { IMovie } from '@/models/generated/movie';
-import { tmdbDetailMovieSchema } from '@/models/movie-types';
+import { MovieType, NewMovieType, TmdbDetailMovieType, newMovieSchema, tmdbDetailMovieSchema } from '@/models/movie-types';
 
-// const movieDataSchema = z.object({
-//   id: z.number(),
-//   imdb_id: z.string(),
-//   title: z.string(),
-//   tagline: z.string(),
-//   poster_path: z.string(),
-//   release_date: z.string(),
-//   runtime: z.number(),
-//   overview: z.string(),
-//   genres: z.array(z.object({ name: z.string() }))
-//     .transform((value) => value.map((genre) => genre.name).join(', ')),
-//   budget: z.number(),
-//   revenue: z.number(),
-//   homepage: z.string(),
-//   popularity: z.number(),
-//   vote_average: z.number(),
-//   vote_count: z.number(),
-// });
+export async function addMovie(id: number): Promise<MovieType> {
+  const fullMovieData: TmdbDetailMovieType | undefined = await getMovieById(id);
 
-export async function addMovie(id: number): Promise<IMovie> {
-  const fullMovieData = await getMovieById(id);
-  const validatedMovieData: Omit<IMovie, 'updatedAt' | 'createdAt' | 'id'> = tmdbDetailMovieSchema.parse(fullMovieData);
+  
+  const validatedMovieData: NewMovieType = newMovieSchema.parse(fullMovieData);
 
   return await prisma.movie.create({
     data: validatedMovieData,
