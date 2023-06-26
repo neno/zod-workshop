@@ -1,6 +1,6 @@
 import { getMovieReviews } from '@/lib/api';
-import { TmdbReviewsResultType } from '@/models/api-review-results';
 import { VerticalContainer } from './VerticalContainer';
+import { TmdbReviewsResultType } from '@/models';
 
 const fetchReviews = async (
   movieId: number

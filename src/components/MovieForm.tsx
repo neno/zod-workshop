@@ -8,24 +8,8 @@ import Link from 'next/link';
 import { TextField } from '@/components/TextField';
 import { useRouter } from 'next/navigation';
 import { updateMovie } from '@/app/actions';
-import { MovieType } from '@/models';
+import { ErrorsType, MovieType } from '@/models';
 
-interface ErrorsType {
-  string: {
-    required_error: string;
-    invalid_type_error: string;
-  };
-  number: {
-    required_error: string;
-    invalid_type_error: string;
-  };
-  nonnegative: {
-    message: string;
-  };
-  url: {
-    message: string;
-  };
-}
 const FormSchema = (errors: ErrorsType) =>
   z.object({
     title: z
@@ -56,7 +40,7 @@ const FormSchema = (errors: ErrorsType) =>
 interface MovieFormProps {
   movie: MovieType;
   translations: any;
-  errors: any;
+  errors: ErrorsType;
 }
 
 export const MovieForm: FC<MovieFormProps> = ({
