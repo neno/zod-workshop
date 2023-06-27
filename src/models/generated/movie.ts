@@ -1,6 +1,6 @@
 import * as z from "zod"
 
-export const MovieSchema = z.object({
+export const movieSchema = z.object({
   id: z.number().int(),
   imdb_id: z.string().nullish(),
   title: z.string(),

@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { FC } from 'react';
 import Link from 'next/link';
@@ -10,30 +9,33 @@ import { useRouter } from 'next/navigation';
 import { updateMovie } from '@/app/actions';
 import { ErrorsType, MovieType } from '@/models';
 
-const FormSchema = (errors: ErrorsType) =>
+const createFormSchema = (errors: ErrorsType) =>
   z.object({
     title: z
       .string(errors?.string)
       .nonempty({ message: errors.string.required_error }),
-    tagline: z.string(errors?.string),
+    tagline: z.string(errors?.string).nullable().optional(),
     release_date: z.string(errors?.string),
     runtime: z.coerce
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
+      .nullable()
       .optional(),
     genres: z.string(errors?.string),
     overview: z.string(errors?.string),
     budget: z.coerce
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
+      .nullable()
       .optional(),
     revenue: z.coerce
       .number(errors?.number)
       .nonnegative(errors.nonnegative)
+      .nullable()
       .optional(),
     homepage: z.union([
       z.literal(''),
-      z.string(errors?.string).trim().url(errors?.url),
+      z.string(errors?.string).trim().url(errors?.url).nullable().optional(),
     ]),
   });
 
@@ -48,18 +50,20 @@ export const MovieForm: FC<MovieFormProps> = ({
   translations,
   errors,
 }) => {
-  const resolver = zodResolver(FormSchema(errors));
-  type ResolvedSchema = typeof resolver;
+  const formSchema = createFormSchema(errors);
+  type FormDataType = z.infer<typeof formSchema>;
+
+  // const resolver = zodResolver(FormSchema(errors));
+  // type FormDataType = typeof resolver;
   const router = useRouter();
-  const methods = useForm<ResolvedSchema>({
-    resolver,
+  const methods = useForm<FormDataType>({
     defaultValues: {
       ...movie,
     },
   });
   const { handleSubmit } = methods;
 
-  const submit = async (data: ResolvedSchema) => {
+  const submit = async (data: FormDataType) => {
     await updateMovie(movie.id, data);
     router.push(`/movies/${movie.id}`);
   };

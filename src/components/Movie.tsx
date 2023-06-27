@@ -11,12 +11,7 @@ interface MovieProps extends MovieItemType {
   isSelected: boolean;
 }
 
-export function Movie({
-  id,
-  title,
-  poster_path,
-  isSelected: isSelected,
-}: MovieProps) {
+export function Movie({ id, title, poster_path, isSelected }: MovieProps) {
   const [isPending] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
   const Icon = isSelected ? IconTrash : IconPlus;
@@ -50,7 +45,7 @@ export function Movie({
   });
 
   return (
-    <Card title={title} poster_path={poster_path ?? '/no-image.png'}>
+    <Card title={title} poster_path={poster_path}>
       <Button disabled={isMutating} onClick={handleClick}>
         <Icon />
       </Button>
