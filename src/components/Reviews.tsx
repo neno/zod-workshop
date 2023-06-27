@@ -1,5 +1,5 @@
 import { getMovieReviews } from '@/lib/api';
-import { VerticalContainer } from './VerticalContainer';
+import { Stack } from './Stack';
 import { TmdbReviewsResultType } from '@/models';
 
 const fetchReviews = async (
@@ -17,10 +17,10 @@ export async function Reviews({ movieId }: { movieId: number }) {
       <ul className='flex flex-col gap-4'>
         {data.results.map((review) => (
           <li key={review.id}>
-            <VerticalContainer className='gap-2'>
+            <Stack className='gap-2'>
               <h3>{review.author}</h3>
               <p>{review.content}</p>
-            </VerticalContainer>
+            </Stack>
           </li>
         ))}
       </ul>

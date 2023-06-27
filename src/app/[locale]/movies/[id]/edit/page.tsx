@@ -1,5 +1,5 @@
 import { NextImage } from '@/components/NextImage';
-import { VerticalContainer } from '@/components/VerticalContainer';
+import { Stack } from '@/components/Stack';
 import prisma from '@/lib/prisma';
 import { MovieForm } from '@/components/MovieForm';
 import { useTranslations } from 'next-intl';
@@ -62,7 +62,7 @@ export default async function MoviePage({
 
   if (movie) {
     return (
-      <VerticalContainer>
+      <Stack>
         <div className='grid grid-cols-2 gap-8'>
           <div className='relative'>
             <NextImage
@@ -77,7 +77,7 @@ export default async function MoviePage({
             <MovieFormTemplate movie={movie} />
           </div>
         </div>
-      </VerticalContainer>
+      </Stack>
     );
   }
 

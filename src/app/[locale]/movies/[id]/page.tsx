@@ -1,6 +1,6 @@
 import { NextImage } from '@/components/NextImage';
 import { Reviews } from '@/components/Reviews';
-import { VerticalContainer } from '@/components/VerticalContainer';
+import { Stack } from '@/components/Stack';
 import prisma from '@/lib/prisma';
 import { Suspense } from 'react';
 import { DefList } from '@/components/DefList';
@@ -19,7 +19,7 @@ export default async function MoviePage({
 
   if (movie) {
     return (
-      <VerticalContainer>
+      <Stack>
         <div className='grid grid-cols-12 gap-8'>
           <div className='grid content-center justify-center col-span-4 bg-gray-300'>
             {movie.poster_path ? (
@@ -51,15 +51,15 @@ export default async function MoviePage({
           </div>
         </div>
         <section>
-          <VerticalContainer className='gap-4'>
+          <Stack className='gap-4'>
             <h2>Reviews</h2>
             <Suspense fallback={<p>Loading...</p>}>
               {/* @ts-expect-error Async Server Component */}
               <Reviews movieId={movie.id} />
             </Suspense>
-          </VerticalContainer>
+          </Stack>
         </section>
-      </VerticalContainer>
+      </Stack>
     );
   }
 

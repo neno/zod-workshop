@@ -1,7 +1,7 @@
 import { Container } from '@/components/Container';
 import { Nav } from '@/components/Nav';
 import { SearchForm } from '@/components/SearchForm';
-import { VerticalContainer } from '@/components/VerticalContainer';
+import { Stack } from '@/components/Stack';
 import '../globals.css';
 import { notFound } from 'next/navigation';
 import { useLocale } from 'next-intl';
@@ -27,7 +27,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} data-theme='dark'>
       <body>
-        <VerticalContainer>
+        <Stack>
           <header>
             <Container>
               <Nav />
@@ -37,7 +37,7 @@ export default async function RootLayout({
             <Container>{children}</Container>
           </main>
           <footer></footer>
-        </VerticalContainer>
+        </Stack>
       </body>
     </html>
   );

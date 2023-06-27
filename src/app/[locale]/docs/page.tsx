@@ -1,14 +1,14 @@
 import Image from 'next/image';
-import { VerticalContainer } from '@/components/VerticalContainer';
+import { Stack } from '@/components/Stack';
 
 export default function DocsPage() {
   return (
     <div className='grid grid-cols-12 gap-8'>
       <div className='col-span-8'>
-        <VerticalContainer className='gap-4'>
+        <Stack className='gap-4'>
           <h1>Documentation</h1>
           <section>
-            <VerticalContainer className='gap-4'>
+            <Stack className='gap-4'>
               <h2>The problem with JS Frameworks</h2>
 
               <ul className='list'>
@@ -24,10 +24,10 @@ export default function DocsPage() {
                   and extremely limiting for SEO (Search Engine Optimization)
                 </li>
               </ul>
-            </VerticalContainer>
+            </Stack>
           </section>
           <section>
-            <VerticalContainer className='gap-4'>
+            <Stack className='gap-4'>
               <h2>Why Next.js</h2>
 
               <p>Next.js provides the best of both worlds:</p>
@@ -62,10 +62,10 @@ export default function DocsPage() {
                 width={1506}
                 height={1177}
               />
-            </VerticalContainer>
+            </Stack>
           </section>
           <section>
-            <VerticalContainer className='gap-4'>
+            <Stack className='gap-4'>
               <h2>Dual Rendering</h2>
               <p>
                 Once a page is loaded in the Browser React can take over. This
@@ -100,10 +100,10 @@ export default function DocsPage() {
                 bundle that needs to be sent from the server to client when the
                 page is loaded which again may lead to a bad user experience.
               </p>
-            </VerticalContainer>
+            </Stack>
           </section>
           <section>
-            <VerticalContainer className='gap-4'>
+            <Stack className='gap-4'>
               <h2>A fine grained rendering?</h2>
 
               <p>
@@ -192,9 +192,9 @@ export default function DocsPage() {
                 width={1600}
                 height={686}
               />
-            </VerticalContainer>
+            </Stack>
           </section>
-        </VerticalContainer>
+        </Stack>
       </div>
       <aside className='col-span-4'>
         <h2>External Links</h2>
