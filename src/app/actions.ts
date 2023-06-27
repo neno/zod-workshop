@@ -1,44 +1,41 @@
 'use server'
 
+import { getMovieGenresByMovieId } from '@/lib/api';
 import prisma from "@/lib/prisma";
-import {getMovieById} from "@/lib/api";
-import { MovieType, TmdbDetailMovieType, newMovieSchema, updateMovieSchema } from '@/models/movie-types';
+import { MovieSchema } from '@/models';
+import { MovieCreateType, MovieUpdateType, TmdbMovieItemType } from '@/models/movie-types';
+import { Prisma } from '@prisma/client';
+import { mergeTypes, z } from 'zod';
 
-export async function addMovie(id: number): Promise<MovieType | undefined> {
-  let fullMovieData: TmdbDetailMovieType | undefined = await getMovieById(id);
+// export type MovieFormType = Prisma.MovieCreateArgs['data']
+// type myType = z.infer<typeof MovieSchema>
+// type myType = MovieCreateArgs.data
+// export async function addMovie(movie: any) {
+//   console.log('movie', movie);
+//   // return undefined;
+  
+//   // const genres = await getMovieGenresByMovieId(movie.id);
+//   // // const validatedData = movieFormSchema.parse({...movie, genres});
 
-  if (!fullMovieData) {
-    return;
-  }
+//   return await prisma.movie.create({
+//     data: {...movie, imdb_id: null, genres: [], title: null},
+//   });
+// }
 
-  const validMovieData = newMovieSchema.parse({
-    imdb_id: fullMovieData.imdb_id ?? '',
-    title: fullMovieData.title,
-    tagline: fullMovieData.tagline,
-    poster_path: fullMovieData.poster_path ?? '',
-    release_date: fullMovieData.release_date,
-    runtime: fullMovieData.runtime,
-    overview: fullMovieData.overview,
-    genres: fullMovieData.genres?.map((genre) => genre.name).join(', '),
-    budget: fullMovieData.budget,
-    revenue: fullMovieData.revenue,
-    homepage: fullMovieData.homepage,
-    popularity: fullMovieData.popularity,
-    vote_average: fullMovieData.vote_average,
-    vote_count: fullMovieData.vote_count,
-  });
+type AddMovieDataType = mergeTypes<MovieCreateType, { id: number} >
+
+export async function addMovie(data: AddMovieDataType) {
+  const genres = await getMovieGenresByMovieId(data.id);
 
   return await prisma.movie.create({
-    data: validMovieData,
+    data: {...data, genres: genres ?? '' },
   });
 }
 
-export async function updateMovie(id: number, data: Partial<MovieType>) {
-  const validatedData = updateMovieSchema.parse(data);
-
+export async function updateMovie(id: number, data: MovieUpdateType) {
   return await prisma.movie.update({
     where: { id },
-    data: validatedData,
+    data,
   });
 }
 

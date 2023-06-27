@@ -6,12 +6,15 @@ import { Card } from '@/components/Card';
 import { IconPlus, IconTrash } from './icons';
 import { addMovie, deleteMovie } from '@/app/actions';
 import { MovieItemType } from '@/models';
+import { toast } from 'react-toastify';
 
-interface MovieProps extends MovieItemType {
+interface MovieProps {
+  movie: MovieItemType;
   isSelected: boolean;
 }
 
-export function Movie({ id, title, poster_path, isSelected }: MovieProps) {
+export function Movie({ movie, isSelected }: MovieProps) {
+  const { id, title, poster_path } = movie;
   const [isPending] = useTransition();
   const [isFetching, setIsFetching] = useState(false);
   const Icon = isSelected ? IconTrash : IconPlus;
@@ -25,16 +28,18 @@ export function Movie({ id, title, poster_path, isSelected }: MovieProps) {
 
     try {
       setIsFetching(true);
-
       if (isSelected) {
         await deleteMovie(id);
+        toast.success(`Removed “${title}“ from playlist!`);
       } else {
-        await addMovie(id);
+        await addMovie(movie);
+        toast.success(`Added “${title}“ to playlist!`);
       }
-
-      setIsFetching(false);
     } catch (error) {
+      toast.error(error as string);
       setErrorMessage(error as string);
+    } finally {
+      setIsFetching(false);
     }
   };
 

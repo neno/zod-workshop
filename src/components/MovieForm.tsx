@@ -7,40 +7,23 @@ import Link from 'next/link';
 import { TextField } from '@/components/TextField';
 import { useRouter } from 'next/navigation';
 import { updateMovie } from '@/app/actions';
-import { ErrorsType, MovieType } from '@/models';
+import { Movie } from '@prisma/client';
+import { ErrorsType } from '@/models';
 
 const createFormSchema = (errors: ErrorsType) =>
   z.object({
     title: z
       .string(errors?.string)
       .nonempty({ message: errors.string.required_error }),
-    tagline: z.string(errors?.string).nullable().optional(),
+    imdb_id: z.string(errors?.string),
+    poster_path: z.string(errors?.string),
     release_date: z.string(errors?.string),
-    runtime: z.coerce
-      .number(errors?.number)
-      .nonnegative(errors.nonnegative)
-      .nullable()
-      .optional(),
     genres: z.string(errors?.string),
     overview: z.string(errors?.string),
-    budget: z.coerce
-      .number(errors?.number)
-      .nonnegative(errors.nonnegative)
-      .nullable()
-      .optional(),
-    revenue: z.coerce
-      .number(errors?.number)
-      .nonnegative(errors.nonnegative)
-      .nullable()
-      .optional(),
-    homepage: z.union([
-      z.literal(''),
-      z.string(errors?.string).trim().url(errors?.url).nullable().optional(),
-    ]),
   });
 
 interface MovieFormProps {
-  movie: MovieType;
+  movie: Movie;
   translations: any;
   errors: ErrorsType;
 }
@@ -56,9 +39,10 @@ export const MovieForm: FC<MovieFormProps> = ({
   // const resolver = zodResolver(FormSchema(errors));
   // type FormDataType = typeof resolver;
   const router = useRouter();
+  const { id, updatedAt, createdAt, ...rest } = movie;
   const methods = useForm<FormDataType>({
     defaultValues: {
-      ...movie,
+      ...rest,
     },
   });
   const { handleSubmit } = methods;
@@ -70,47 +54,31 @@ export const MovieForm: FC<MovieFormProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <form
-        className='w-full max-w-xl'
-        noValidate
-        onSubmit={handleSubmit((data) => submit(data))}
-      >
-        <fieldset>
-          <legend className='text-3xl font-bold'>Movie Details</legend>
-          <ol className='grid grid-cols-6 gap-4 mt-8'>
-            <li className='col-span-6'>
+      <form className='block w-full' noValidate onSubmit={handleSubmit(submit)}>
+        <fieldset className='w-full'>
+          <legend className='text-5xl font-bold'>Edit Movie Details</legend>
+          <ol className='flex flex-col gap-3 w-full'>
+            <li>
               <TextField label={translations.title} name='title' />
             </li>
-            <li className='col-span-6'>
-              <TextField label='Tagline' name='tagline' />
-            </li>
-            <li className='col-span-3'>
+            <li className='w-1/2'>
               <TextField label='Release Date' type='date' name='release_date' />
             </li>
-            <li className='col-span-3'>
-              <TextField label='Runtime' type='number' name='runtime' />
+            <li>
+              <TextField label='Poster' name='poster_path' />
             </li>
-            <li className='col-span-6'>
+            <li>
               <TextField label='Genre' name='genres' />
             </li>
-            <li className='col-span-6'>
+            <li>
               <TextField multiline label='Overview' name='overview' />
             </li>
-            <li className='col-span-3'>
-              <TextField label='Budget' type='number' name='budget' />
-            </li>
-            <li className='col-span-3'>
-              <TextField label='Revenue' type='number' name='revenue' />
-            </li>
-            <li className='col-span-6'>
-              <TextField label='Homepage' name='homepage' />
-            </li>
           </ol>
-          <div className='flex justify-between mt-12'>
+          <div className='flex justify-start gap-4 mt-12'>
             <button className='btn btn-primary' type='submit'>
               Submit
             </button>
-            <Link className='btn btn-error' href={`/movies/${movie.id}`}>
+            <Link className='btn' href={`/movies/${movie.id}`}>
               Cancel
             </Link>
           </div>

@@ -1,16 +1,20 @@
+'use client';
+
 import { NavLink } from '@/components/NavLink';
-import { SearchForm } from '@/components/SearchForm';
+import { usePathname } from 'next/navigation';
 
 export function Nav() {
+  const pathname = usePathname();
+
   return (
     <div className='tabs tabs-boxed flex items-center justify-between p-4 mt-8'>
       <div>
-        <NavLink href='/'>Selected Movies</NavLink>
-        <NavLink href='/search'>Search</NavLink>
-        <NavLink href='/docs'>Documentation</NavLink>
-      </div>
-      <div>
-        <SearchForm />
+        <NavLink href='/' isActive={!pathname.includes('search')}>
+          Playlist
+        </NavLink>
+        <NavLink href='/search' isActive={pathname.includes('search')}>
+          Search
+        </NavLink>
       </div>
     </div>
   );

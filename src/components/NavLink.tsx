@@ -2,27 +2,16 @@
 
 import Link from 'next/link';
 import { FC } from 'react';
-import { useSelectedLayoutSegment } from 'next/navigation';
 
 interface NavLinkProps {
   href: string;
-  className?: string;
+  isActive: boolean;
   children: React.ReactNode;
 }
 
-export const NavLink: FC<NavLinkProps> = ({
-  href,
-  children,
-  className = 'tab',
-}) => {
-  const segment = useSelectedLayoutSegment();
-  const active = href === `/${segment ?? ''}`;
-
+export const NavLink: FC<NavLinkProps> = ({ href, isActive, children }) => {
   return (
-    <Link
-      href={href}
-      className={active ? `${className} tab-active` : className}
-    >
+    <Link href={href} className={`tab ${isActive && 'tab-active'}`}>
       {children}
     </Link>
   );

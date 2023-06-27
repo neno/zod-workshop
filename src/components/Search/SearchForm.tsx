@@ -1,9 +1,13 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
-export function SearchForm() {
-  const router = useRouter();
+interface SearchFormProps {
+  onSubmit: (searchTerm: string) => void;
+  isLoading?: boolean;
+}
+
+export function SearchForm({ onSubmit }: SearchFormProps) {
   const searchParams = useSearchParams();
   const searchTerm = searchParams.get('search');
 
@@ -11,11 +15,11 @@ export function SearchForm() {
     event.preventDefault();
     const q = event.currentTarget.searchTerm.value;
     const encodedQ = encodeURIComponent(q);
-    router.push(`/search?search=${encodedQ}`);
+    onSubmit(encodedQ);
   }
 
   return (
-    <div className='max-w-2xl'>
+    <div className=''>
       <form onSubmit={handleSubmit}>
         <label className='block border border-gray-500 p-1 rounded bg-black'>
           <input

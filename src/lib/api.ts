@@ -1,5 +1,5 @@
 
-import { MovieItemType, TmdbDetailMovieType, TmdbReviewsResultType, TmdbSearchResultsType, tmdbDetailMovieSchema, tmdbReviewsResultSchema, tmdbSearchResultSchema } from '@/models';
+import { GenreType, MovieItemType, TmdbReviewsResultType, TmdbSearchResultsType, tmdbReviewsResultSchema, tmdbSearchResultSchema } from '@/models';
 
 const fetchData = async (path: string, params?: string) => {
   const url = `https://api.themoviedb.org/3/${path}?api_key=00f3f32198696caff437631c007a7548${params ? `&${params}` : ''}`;
@@ -14,14 +14,22 @@ export async function getPopularMovies(): Promise<TmdbSearchResultsType> {
 }
 
 export async function searchMovies(searchTerm: string): Promise<MovieItemType[]> {
+  console.log('searchMovies - api', searchTerm);
+  
   if (searchTerm) {
     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
-    const res = tmdbSearchResultSchema.parse(searchResult);
-    const movieItems: MovieItemType[] = res.results.map((movie) => ({
+    // const res = tmdbSearchResultSchema.parse(searchResult);
+
+    // console.log('searchMovies - res', res);
+    
+    
+    const movieItems: MovieItemType[] = searchResult.results.map((movie: any) => ({
       id: movie.id,
       title: movie.title,
-      poster_path: movie.poster_path ?? '',
-      release_date: movie.release_date,
+      imdb_id: !!movie.imdb_id ? movie.imdb_id : null,
+      poster_path: !!movie.poster_path ? movie.poster_path : null,
+      overview: !!movie.overview ? movie.overview : null,
+      release_date: !!movie.release_date ? movie.release_date : null,
     }));
 
     return movieItems;
@@ -30,9 +38,10 @@ export async function searchMovies(searchTerm: string): Promise<MovieItemType[]>
   return [];
 }
 
-export async function getMovieById(id: number): Promise<TmdbDetailMovieType | undefined> {
+export async function getMovieGenresByMovieId(id: number): Promise<string | undefined> {
   const movie = await fetchData(`movie/${id}`);
-  return tmdbDetailMovieSchema.parse(movie);
+  const genres = movie.genres?.map((genre: GenreType) => genre.name).join(', ');
+  return genres;
 }
 
 export async function getMovieReviews(id: number): Promise<TmdbReviewsResultType | undefined> {

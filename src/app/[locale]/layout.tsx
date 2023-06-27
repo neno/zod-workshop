@@ -1,10 +1,11 @@
 import { Container } from '@/components/Container';
+import { useLocale } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { ToastContainer } from 'react-toastify';
 import { Nav } from '@/components/Nav';
-import { SearchForm } from '@/components/SearchForm';
 import { Stack } from '@/components/Stack';
 import '../globals.css';
-import { notFound } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: 'Create Next App',
@@ -38,6 +39,18 @@ export default async function RootLayout({
           </main>
           <footer></footer>
         </Stack>
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          theme='dark'
+        />
       </body>
     </html>
   );
