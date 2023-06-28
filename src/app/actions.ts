@@ -26,9 +26,10 @@ type AddMovieDataType = mergeTypes<MovieCreateType, { id: number} >
 
 export async function addMovie(data: AddMovieDataType) {
   const genres = await getMovieGenresByMovieId(data.id);
+  const { id, ...rest } = data;
 
   return await prisma.movie.create({
-    data: {...data, genres: genres ?? '' },
+    data: {...rest, genres: genres ?? '' },
   });
 }
 

@@ -21,15 +21,20 @@ export type GenreType = z.infer<typeof genreSchema>;
 
 export const tmdbMovieItemSchema = z.object({
   adult: z.boolean(),
-  backdrop_path: z.string().optional(),
-  genre_ids: z.array(z.number()).optional(),
+  backdrop_path: z.string().nullish(),
+  genre_ids: z.array(z.number()).nullish(),
   id: z.number(),
   title: z.string(),
-  imdb_id: z.string().nullable(),
-  release_date: z.string().optional(),
-  overview: z.string().optional(),
-  poster_path: z.string().optional(),
-  video: z.boolean().optional(),
+  imdb_id: z.string().nullish(),
+  release_date: z.string().nullish(),
+  overview: z.string().nullish(),
+  poster_path: z.string().nullish(),
+  video: z.boolean(),
+  original_language: z.string().nullish(),
+  original_title: z.string().nullish(),
+  popularity: z.number().nullish(),
+  vote_average: z.number().nullish(),
+  vote_count: z.number().nullish(),
 });
 
 export type TmdbMovieItemType = z.infer<typeof tmdbMovieItemSchema>;

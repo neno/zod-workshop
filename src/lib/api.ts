@@ -18,18 +18,15 @@ export async function searchMovies(searchTerm: string): Promise<MovieItemType[]>
   
   if (searchTerm) {
     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
-    // const res = tmdbSearchResultSchema.parse(searchResult);
-
-    // console.log('searchMovies - res', res);
+    const res = tmdbSearchResultSchema.parse(searchResult);
     
-    
-    const movieItems: MovieItemType[] = searchResult.results.map((movie: any) => ({
+    const movieItems: MovieItemType[] = res.results.map((movie: any) => ({
       id: movie.id,
       title: movie.title,
-      imdb_id: !!movie.imdb_id ? movie.imdb_id : null,
-      poster_path: !!movie.poster_path ? movie.poster_path : null,
-      overview: !!movie.overview ? movie.overview : null,
-      release_date: !!movie.release_date ? movie.release_date : null,
+      imdb_id: movie.imdb_id,
+      poster_path: movie.poster_path,
+      overview: movie.overview,
+      release_date: movie.release_date,
     }));
 
     return movieItems;
