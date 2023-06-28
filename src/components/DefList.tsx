@@ -1,15 +1,13 @@
 import { FC } from 'react';
 import { useTranslations } from 'next-intl';
-import { MovieType } from '@/models';
+import { Movie } from '@prisma/client';
 
 interface DefListProps {
-  movie: MovieType;
+  movie: Movie;
 }
 
 export const DefList: FC<DefListProps> = ({ movie }) => {
   const t = useTranslations('movie');
-
-  console.log(movie);
 
   return (
     <dl className='flex flex-col w-full'>

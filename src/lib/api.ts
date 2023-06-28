@@ -3,8 +3,6 @@ import { GenreType, MovieItemType, TmdbReviewsResultType, TmdbSearchResultsType,
 
 const fetchData = async (path: string, params?: string) => {
   const url = `https://api.themoviedb.org/3/${path}?api_key=00f3f32198696caff437631c007a7548${params ? `&${params}` : ''}`;
-  console.log('fetchData - api', url);
-  
   const res = await fetch(url);
   return await res.json();
 }
@@ -14,12 +12,9 @@ export async function getPopularMovies(): Promise<TmdbSearchResultsType> {
 }
 
 export async function searchMovies(searchTerm: string): Promise<MovieItemType[]> {
-  console.log('searchMovies - api', searchTerm);
-  
   if (searchTerm) {
     const searchResult = await fetchData('search/movie', `query=${searchTerm}`);
     const res = tmdbSearchResultSchema.parse(searchResult);
-    
     const movieItems: MovieItemType[] = res.results.map((movie: any) => ({
       id: movie.id,
       title: movie.title,
