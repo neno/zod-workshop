@@ -9,6 +9,8 @@ interface DefListProps {
 export const DefList: FC<DefListProps> = ({ movie }) => {
   const t = useTranslations('movie');
 
+  console.log(movie);
+
   return (
     <dl className='flex flex-col w-full'>
       <dt className='text-md font-bold mb-1 uppercase'>{t('released')}</dt>

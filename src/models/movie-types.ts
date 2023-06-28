@@ -61,4 +61,4 @@ export type TmdbSearchResultsType = z.infer<typeof tmdbSearchResultSchema>
 
 // export type MovieFormType = z.infer<typeof movieFormSchema>;
 
-export type MovieItemType = Omit<Movie, 'overview' | 'genres' | 'createdAt' | 'updatedAt'>;
+export type MovieItemType = Omit<Movie, 'genres' | 'imdb_id' | 'createdAt' | 'updatedAt'>;

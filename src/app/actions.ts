@@ -1,35 +1,15 @@
 'use server'
 
-import { getMovieGenresByMovieId } from '@/lib/api';
+import { getMovieDetailsById } from '@/lib/api';
 import prisma from "@/lib/prisma";
-import { MovieSchema } from '@/models';
-import { MovieCreateType, MovieUpdateType, TmdbMovieItemType } from '@/models/movie-types';
-import { Prisma } from '@prisma/client';
-import { mergeTypes, z } from 'zod';
+import { MovieItemType, MovieUpdateType } from '@/models/movie-types';
 
-// export type MovieFormType = Prisma.MovieCreateArgs['data']
-// type myType = z.infer<typeof MovieSchema>
-// type myType = MovieCreateArgs.data
-// export async function addMovie(movie: any) {
-//   console.log('movie', movie);
-//   // return undefined;
-  
-//   // const genres = await getMovieGenresByMovieId(movie.id);
-//   // // const validatedData = movieFormSchema.parse({...movie, genres});
-
-//   return await prisma.movie.create({
-//     data: {...movie, imdb_id: null, genres: [], title: null},
-//   });
-// }
-
-type AddMovieDataType = mergeTypes<MovieCreateType, { id: number} >
-
-export async function addMovie(data: AddMovieDataType) {
-  const genres = await getMovieGenresByMovieId(data.id);
+export async function addMovie(data: MovieItemType) {
+  const { genres, imdb_id } = await getMovieDetailsById(data.id);
   const { id, ...rest } = data;
 
   return await prisma.movie.create({
-    data: {...rest, genres: genres ?? '' },
+    data: {...rest, genres, imdb_id },
   });
 }
 

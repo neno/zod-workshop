@@ -23,7 +23,6 @@ export async function searchMovies(searchTerm: string): Promise<MovieItemType[]>
     const movieItems: MovieItemType[] = res.results.map((movie: any) => ({
       id: movie.id,
       title: movie.title,
-      imdb_id: movie.imdb_id,
       poster_path: movie.poster_path,
       overview: movie.overview,
       release_date: movie.release_date,
@@ -35,10 +34,11 @@ export async function searchMovies(searchTerm: string): Promise<MovieItemType[]>
   return [];
 }
 
-export async function getMovieGenresByMovieId(id: number): Promise<string | undefined> {
+export async function getMovieDetailsById(id: number): Promise<{ genres: string | null; imdb_id: string | null; }> {
   const movie = await fetchData(`movie/${id}`);
-  const genres = movie.genres?.map((genre: GenreType) => genre.name).join(', ');
-  return genres;
+  const genres = movie.genres ? movie.genres.map((genre: GenreType) => genre.name).join(', ') : null;
+  const imdb_id = movie.imdb_id ? movie.imdb_id : null;
+  return { genres, imdb_id };
 }
 
 export async function getMovieReviews(id: number): Promise<TmdbReviewsResultType | undefined> {
